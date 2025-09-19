@@ -1,29 +1,37 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { supabaseClient } from "@/lib/supabase/client";
 
+export async function POST(request: Request) {
+  const { email, password } = await request.json();
 
-export async function POST(request: Request){
-    const {email, password} = await request.json();
-    //check for unavailability of required fields and other validation
-    try{
-        const {data, error} = await supabaseAdmin.auth.signInWithPassword({
-            email, password
-        });
-        if (error){
-            console.error(error);
-            return NextResponse.json({error: error.message}, {status: 400});
-        };
-        return NextResponse.json(
-            {
-                user: data.user,
-                session: data.session
-            },
-            {
-                status: 200
-            })
-    } catch(error:any){
-        return NextResponse.json(
-            {error: error.message}, 
-            {status: 500})
+  if (!email || !password) {
+    return NextResponse.json(
+      { error: "Email and password are required" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
+
+    return NextResponse.json(
+      {
+        user: data.user,
+        session: data.session,
+      },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message || "Internal server error" },
+      { status: 500 }
+    );
+  }
 }

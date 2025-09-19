@@ -1,29 +1,21 @@
-import { NextResponse } from "next/server";
-import {supabaseAdmin} from "@/lib/supabaseAdmin";
+import { NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
 
+export async function POST(request: Request) {
+  const { email, password } = await request.json();
+  const supabase = await createClient();
 
-export async function POST(request: Request){
-    const {email, password} = await request.json();
-
-    try{
-        const {data, error} = await supabaseAdmin.auth.signUp({
-            email, password
-        });
-        if (error){
-            console.error(error);
-            return NextResponse.json({error: error.message}, {status: 400});
-        };
-        return NextResponse.json(
-            {
-                user: data.user,
-                session: data.session
-            },
-            {
-                status: 200
-            })
-    } catch(error: any){
-        return NextResponse.json(
-            {error: error.message}, 
-            {status: 500})
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: `http://localhost:3000/auth/verify-email?email=${encodeURIComponent(email)}`
     }
+  });
+    
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+console.log("successful");
+  return NextResponse.json({ message: 'Registration successful! Please check your email to confirm your account.' }, { status: 201 });
 }

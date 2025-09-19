@@ -4,30 +4,57 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import axios from "axios";
+import { z } from 'zod';
+import { useRouter } from 'next/navigation';
+
+// Define the Zod schema for login form validation
+const loginSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+});
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [errors, setErrors] = useState<z.ZodIssue[]>([]);
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
+    setErrors([]); // Clear previous errors
 
-    // Here we will integrate with Supabase for actual login
-    // For now, let's just simulate a login
-    console.log('Attempting to log in with:', { email, password });
+    try {
+      // Validate input using Zod
+      const validatedData = loginSchema.parse({ email, password });
 
-    setTimeout(() => {
-      if (email === 'test@example.com' && password === 'password') {
-        setMessage('Login successful!');
+      // Make API call to your login endpoint
+      const response = await axios.post('/api/auth/login', validatedData);
+
+      if (response.status === 200) {
+        setMessage('Login successful! Redirecting...');
+        console.log('Login successful! Redirecting...');
+        router.push('/dashboard');
       } else {
-        setMessage('Invalid credentials.');
+        setMessage(response.data.message || 'Login failed.');
       }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors(error.issues); // Set Zod validation errors
+      }
+      if (axios.isAxiosError(error) && error.response) {
+        console.log("err:", error)
+        setMessage(error.response.data.message || 'An error occurred during login.');
+      } else {
+        setMessage('An unexpected error occurred.');
+      }
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -44,6 +71,11 @@ const LoginForm = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+          {errors.find(err => err.path[0] === 'email') && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.find(err => err.path[0] === 'email')?.message}
+            </p>
+          )}
         </div>
         <div>
           <Label htmlFor="password">Password</Label>
@@ -54,15 +86,17 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          {errors.find(err => err.path[0] === 'password') && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.find(err => err.path[0] === 'password')?.message}
+            </p>
+          )}
         </div>
         <Button type="submit" className="w-full" disabled={loading}>
           {loading ? 'Logging in...' : 'Login'}
         </Button>
         {message && <p className="text-center text-sm">{message}</p>}
       </form>
-      <p className="text-center text-sm text-gray-500">
-        Don't have an account? <a href="/auth/signup" className="text-blue-500 hover:underline">Sign Up</a>
-      </p>
     </div>
   );
 };
