@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
+/**
+ * Handles PUT requests to update an existing note.
+ *
+ * @param {Request} request - The incoming request object containing the updated note data (title, content, topic_id).
+ * @param {{ params: { id: string } }} { params } - The parameters object containing the note ID.
+ * @returns {Promise<NextResponse>} A JSON response with the updated note or an error message.
+ */
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
     const { id } = params;
     const { title, content, topic_id } = await request.json();
@@ -31,6 +38,13 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     return NextResponse.json(data[0], { status: 200 });
 }
 
+/**
+ * Handles DELETE requests to delete an existing note.
+ *
+ * @param {Request} request - The incoming request object.
+ * @param {{ params: { id: string } }} { params } - The parameters object containing the note ID.
+ * @returns {Promise<NextResponse>} A JSON response indicating success or an error message.
+ */
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
     const {id} = await params;
     const supabase = await createClient();

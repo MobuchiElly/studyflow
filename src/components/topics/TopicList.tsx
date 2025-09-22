@@ -2,12 +2,35 @@ import { TopicCard } from "./TopicCard";
 import { Topic } from "@/types/topic";
 
 interface TopicListProps {
+    /**
+     * An array of `Topic` objects to be displayed in the list.
+     */
     topics: Topic[];
+    /**
+     * Callback function to be invoked when a topic's edit action is triggered.
+     * @param topic The topic object to be edited.
+     */
     onEditTopic: (topic: Topic) => void;
+    /**
+     * Callback function to be invoked when a topic's delete action is triggered.
+     * @param topicId The ID of the topic to be deleted.
+     */
     onDeleteTopic: (topicId: string) => void;
+    /**
+     * The ID of the topic currently being deleted. Used to show a loading state for that specific topic card.
+     * Can be `null` if no topic is currently being deleted.
+     */
     deletingTopicId: string | null;
 }
 
+/**
+ * `TopicList` is a React functional component that displays a grid of `TopicCard` components.
+ * It handles the rendering of multiple study topics and provides actions for editing and deleting them.
+ * If no topics are available, it displays a message to the user.
+ *
+ * @param {TopicListProps} props - The properties for the component.
+ * @returns {JSX.Element} A grid of topic cards or a message if no topics are found.
+ */
 export default function TopicList({
     topics,
     onEditTopic,

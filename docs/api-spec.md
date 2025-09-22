@@ -1,153 +1,219 @@
-# API Specifications for StudyFlow
+# API Specifications
 
-This document outlines the API endpoints available in the StudyFlow application.
-
----
-
-## 1. Topics API
-
-### Endpoint: `/api/topics`
-
-This endpoint is used for managing study topics.
-
-#### `POST /api/topics`
-
-*   **Description:** Creates a new study topic.
-*   **Authentication:** Requires an authenticated user session. The `creator_id` will be automatically associated with the created topic.
-*   **Request Body:**
-    ```json
-    {
-      "title": "string",
-      "description": "string"
-    }
-    ```
-    *   `title` (required): The title of the topic.
-    *   `description` (required): A brief description of the topic.
-*   **Response (Success - 201 Created):**
-    ```json
-    {
-      "id": "uuid",
-      "title": "string",
-      "description": "string",
-      "creator_id": "uuid",
-      "created_at": "timestamp"
-    }
-    ```
-*   **Response (Error - 401 Unauthorized):**
-    ```json
-    {
-      "error": "Unauthorized"
-    }
-    ```
-*   **Response (Error - 500 Internal Server Error):**
-    ```json
-    {
-      "error": "string"
-    }
-    ```
+This document describes the API endpoints for authentication, notes, and topics in the StudyFlow application.  
+All routes are built on Next.js API Routes with Supabase as the backend.
 
 ---
 
-## 2. Authentication API
+## Authentication
 
-### Endpoint: `/api/auth`
+### Register a User
+**Endpoint:** `POST /api/auth/register`  
+**Description:** Registers a new user with email and password. Sends a confirmation email.  
 
-This endpoint handles user authentication flows.
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "strongpassword123"
+}
 
-#### `POST /api/auth/signup`
+Responses:
 
-*   **Description:** Registers a new user.
-*   **Authentication:** None required.
-*   **Request Body:**
-    ```json
-    {
-      "email": "string",
-      "password": "string"
-    }
-    ```
-    *   `email` (required): User's email address.
-    *   `password` (required): User's password.
-*   **Response (Success - 200 OK):**
-    ```json
-    {
-      "message": "User registered successfully. Check your email for verification."
-    }
-    ```
-*   **Response (Error - 400 Bad Request):**
-    ```json
-    {
-      "error": "string"
-    }
-    ```
-*   **Response (Error - 500 Internal Server Error):**
-    ```json
-    {
-      "error": "string"
-    }
-    ```
+201 Created
 
-#### `POST /api/auth/signin`
+{
+  "message": "Registration successful! Please check your email to confirm your account."
+}
+400 Bad Request
 
-*   **Description:** Authenticates an existing user.
-*   **Authentication:** None required.
-*   **Request Body:**
-    ```json
-    {
-      "email": "string",
-      "password": "string"
-    }
-    ```
-    *   `email` (required): User's email address.
-    *   `password` (required): User's password.
-*   **Response (Success - 200 OK):**
-    ```json
-    {
-      "message": "User logged in successfully."
-    }
-    ```
-*   **Response (Error - 400 Bad Request):**
-    ```json
-    {
-      "error": "string"
-    }
-    ```
-*   **Response (Error - 401 Unauthorized):**
-    ```json
-    {
-      "error": "Invalid credentials"
-    }
-    ```
-*   **Response (Error - 500 Internal Server Error):**
-    ```json
-    {
-      "error": "string"
-    }
-    ```
 
-#### `POST /api/auth/signout`
+{ "error": "Email and password are required" }
+500 Internal Server Error
 
-*   **Description:** Logs out the current user.
-*   **Authentication:** Requires an authenticated user session.
-*   **Request Body:** None.
-*   **Response (Success - 200 OK):**
-    ```json
-    {
-      "message": "User logged out successfully."
-    }
-    ```
-*   **Response (Error - 401 Unauthorized):**
-    ```json
-    {
-      "error": "Unauthorized"
-    }
-    ```
-*   **Response (Error - 500 Internal Server Error):**
-    ```json
-    {
-      "error": "string"
-    }
-    ```
 
----
+{ "error": "Internal server error" }
+Login
+Endpoint: POST /api/auth/login
+Description: Logs in a user with email and password. Returns session and user info.
 
-<!-- Add more API endpoints here as they are developed -->
+Request Body:
+
+
+{
+  "email": "user@example.com",
+  "password": "strongpassword123"
+}
+Responses:
+
+200 OK
+
+
+{
+  "user": { "id": "uuid", "email": "user@example.com" },
+  "session": { "access_token": "jwt-token", "expires_at": 1234567890 }
+}
+400 Bad Request
+
+{ "error": "Invalid login credentials" }
+500 Internal Server Error
+
+
+{ "error": "Internal server error" }
+Logout
+Endpoint: POST /api/auth/logout
+Description: Logs out the currently authenticated user.
+
+Responses:
+
+200 OK
+
+{ "message": "Successfully logged out" }
+400 Bad Request
+
+{ "error": "Failed to log out" }
+500 Internal Server Error
+
+{ "error": "Internal server error" }
+Notes
+Create Note
+Endpoint: POST /api/notes
+Description: Creates a new note linked to the authenticated user.
+
+Request Body:
+
+
+{
+  "title": "Study Binary Trees",
+  "content": "Binary trees are hierarchical structures...",
+  "topic_id": "uuid-of-topic"
+}
+Responses:
+
+201 Created
+
+
+{
+  "id": "note-uuid",
+  "title": "Study Binary Trees",
+  "content": "Binary trees are hierarchical structures...",
+  "topic_id": "uuid-of-topic",
+  "user_id": "user-uuid"
+}
+401 Unauthorized
+
+
+{ "error": "Unauthorised request" }
+500 Internal Server Error
+
+
+{ "error": "Internal server error" }
+Get Notes
+Endpoint: GET /api/notes
+Description: Fetch all notes belonging to the authenticated user.
+
+Responses:
+
+200 OK
+
+
+[
+  {
+    "id": "note-uuid",
+    "title": "Study Binary Trees",
+    "content": "Binary trees are hierarchical structures...",
+    "topic_id": "uuid-of-topic",
+    "user_id": "user-uuid"
+  }
+]
+401 Unauthorized
+
+
+{ "error": "User not authenticated" }
+Update Note
+Endpoint: PUT /api/notes/:id
+Description: Updates an existing note if the user owns it.
+
+Request Body:
+
+
+{
+  "title": "Updated Note Title",
+  "content": "Updated note content",
+  "topic_id": "uuid-of-topic"
+}
+Responses:
+
+200 OK
+
+
+{
+  "id": "note-uuid",
+  "title": "Updated Note Title",
+  "content": "Updated note content",
+  "topic_id": "uuid-of-topic",
+  "user_id": "user-uuid"
+}
+404 Not Found
+
+
+{ "error": "Note not found or unauthorized" }
+Delete Note
+Endpoint: DELETE /api/notes/:id
+Description: Deletes a note if the user owns it.
+
+Responses:
+
+200 OK
+
+
+{ "message": "Note deleted successfully" }
+404 Not Found
+
+
+{ "error": "Note not found or unauthorized" }
+Topics
+Update Topic
+Endpoint: PUT /api/topics/:id
+Description: Updates an existing topic if the user owns it.
+
+Request Body:
+
+
+{
+  "title": "Data Structures",
+  "description": "Covers trees, graphs, and heaps"
+}
+Responses:
+
+200 OK
+
+
+{
+  "id": "topic-uuid",
+  "title": "Data Structures",
+  "description": "Covers trees, graphs, and heaps",
+  "user_id": "user-uuid"
+}
+404 Not Found
+
+
+{ "error": "Topic not found or unauthorized" }
+Delete Topic
+Endpoint: DELETE /api/topics/:id
+Description: Deletes a topic if the user owns it.
+
+Responses:
+
+200 OK
+
+
+{ "message": "Topic deleted successfully" }
+404 Not Found
+
+
+{ "error": "Topic not found or unauthorized" }
+Authentication Notes
+All protected routes (/api/notes/*, /api/topics/*) require the user to be authenticated via Supabase.
+
+Responses are always JSON with clear error messages.

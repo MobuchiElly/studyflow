@@ -62,8 +62,10 @@
     "src/app/api/quizzes/ai-generate/route.env",
     "src/app/api/quizzes/[quizId]/route.env",
     "src/app/api/quizzes/[quizId]/results/route.env",
-    "src/app/api/quizzes/[quizId]/questions/route.env"
-  ],
+    "src/app/api/quizzes/[quizId]/questions/route.env",
+    "src/app/dashboard/layout.env",
+    "src/app/dashboard/quizzes/page.env"
+, "src/app/dashboard/quizzes/[quizId]/page.env", "src/app/dashboard/quizzes/[quizId]/take/page.env", "src/app/checkauth/page.env"  ],
   "exclude": [
     "node_modules"
   ]

@@ -3,6 +3,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { BookOpen, Target, ArrowRight, CheckCircle } from "lucide-react"
 
+/**
+ * Renders the main landing page of the StudyFlow application.
+ * This component includes a hero section, a features section highlighting
+ * note organization and topic management, and a call-to-action section.
+ *
+ * @returns {JSX.Element} The Home page component.
+ */
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">

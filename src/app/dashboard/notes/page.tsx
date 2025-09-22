@@ -10,7 +10,14 @@ import CreateNoteModal from '@/components/notes/CreateNoteModal';
 import EditNoteModal from '@/components/notes/EditNoteModal';
 import { toast } from 'sonner';
 
-console.log("toast:", toast)
+
+/**
+ * Renders the Notes page, displaying a list of notes and providing functionality
+ * for creating, editing, and deleting notes. It also fetches and manages topics
+ * for note organization.
+ *
+ * @returns {JSX.Element} The Notes page component.
+ */
 export default function NotesPage() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [topics, setTopics] = useState<Topic[]>([]); // State for topics

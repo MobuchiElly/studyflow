@@ -2,6 +2,17 @@ import { NoteCard } from "./NoteCard";
 import { NoteListProps } from "@/types/note";
 
 
+/**
+ * Renders a list of note cards.
+ * Displays a message if no notes are available.
+ *
+ * @param {NoteListProps} props - The properties for the component.
+ * @param {Note[]} props.notes - An array of note objects to display.
+ * @param {(note: Note) => void} props.onEditNote - Callback function to handle editing a note.
+ * @param {(id: string) => void} props.onDeleteNote - Callback function to handle deleting a note.
+ * @param {string | null} props.deletingNoteId - The ID of the note currently being deleted, if any.
+ * @returns {JSX.Element} A grid of NoteCard components or a message if no notes are present.
+ */
 export default function NoteList({
     notes,
     onEditNote,

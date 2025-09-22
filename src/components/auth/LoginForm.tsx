@@ -14,6 +14,14 @@ const loginSchema = z.object({
   password: z.string().min(6, { message: "Password must be at least 6 characters" }),
 });
 
+/**
+ * LoginForm component for user authentication.
+ * Handles user input for email and password, validates it using Zod,
+ * and communicates with the backend API for login.
+ * Displays loading states, success messages, and error messages.
+ *
+ * @returns {JSX.Element} The login form component.
+ */
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

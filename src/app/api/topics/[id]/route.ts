@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
+/**
+ * Handles PUT requests to update an existing topic.
+ *
+ * @param {Request} request - The incoming request object containing the updated topic data (title, description).
+ * @param {{ params: { id: string } }} { params } - The parameters object containing the topic ID.
+ * @returns {Promise<NextResponse>} A JSON response with the updated topic or an error message.
+ */
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
     const { id } = params;
     const { title, description, topic_id } = await request.json();
@@ -30,6 +37,13 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     return NextResponse.json(data[0], { status: 200 });
 }
 
+/**
+ * Handles DELETE requests to delete an existing topic.
+ *
+ * @param {Request} request - The incoming request object.
+ * @param {{ params: { id: string } }} { params } - The parameters object containing the topic ID.
+ * @returns {Promise<NextResponse>} A JSON response indicating success or an error message.
+ */
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
     const {id} = params;
     const supabase = await createClient();

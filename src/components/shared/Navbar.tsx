@@ -6,6 +6,15 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { supabaseBrowserClient } from '@/lib/supabase/client';
 
+/**
+ * Renders the navigation bar for the application.
+ * It displays the application title, navigation links to topics and notes,
+ * and dynamically shows either a "Sign Out" button if a user is logged in,
+ * or a "Get Started" link to the login page if no user session exists.
+ * It also handles user session management and sign-out functionality.
+ *
+ * @returns {JSX.Element} The Navbar component.
+ */
 export default function Navbar() {
   const [session, setSession] = useState<any>(null);
   const supabase = supabaseBrowserClient;

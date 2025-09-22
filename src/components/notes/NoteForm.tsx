@@ -32,6 +32,14 @@ const formSchema = z.object({
   topic_id: z.string().uuid().nullable().optional(),
 });
 
+/**
+ * Props for the NoteForm component.
+ * @typedef {object} NoteFormProps
+ * @property {Note} [initialData] - Optional initial data to pre-fill the form fields.
+ * @property {(data: z.infer<typeof formSchema>) => void} onSubmit - Callback function to handle form submission.
+ * @property {boolean} isLoading - Indicates if the form is currently submitting, disabling the submit button.
+ * @property {Topic[]} topics - An array of available topics to display in the topic selection dropdown.
+ */
 interface NoteFormProps {
   initialData?: Note;
   onSubmit: (data: z.infer<typeof formSchema>) => void;
@@ -39,6 +47,14 @@ interface NoteFormProps {
   topics: Topic[];
 }
 
+/**
+ * Renders a form for creating or editing a note.
+ * This component allows users to input a note title, content, and select an optional topic.
+ * It handles form validation using Zod and integrates with react-hook-form.
+ *
+ * @param {NoteFormProps} props - The properties for the component.
+ * @returns {JSX.Element} The Note Form component.
+ */
 export function NoteForm({ initialData, onSubmit, isLoading, topics }: NoteFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

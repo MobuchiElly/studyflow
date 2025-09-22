@@ -2,6 +2,17 @@ import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/comp
 import { Button } from "@/components/ui/button";
 import { NoteCardProps } from "@/types/note";
 
+/**
+ * Renders a single note as a card, displaying its title, a truncated version of its content,
+ * creation date, and action buttons for editing and deleting the note.
+ *
+ * @param {NoteCardProps} props - The properties for the component.
+ * @param {Note} props.note - The note object to display.
+ * @param {(note: Note) => void} props.onEdit - Callback function to be called when the edit button is clicked.
+ * @param {(id: string) => void} props.onDelete - Callback function to be called when the delete button is clicked.
+ * @param {boolean} props.isDeleting - Indicates if the note is currently being deleted, disabling the delete button.
+ * @returns {JSX.Element} A card component representing a note.
+ */
 export function NoteCard({ note, onEdit, onDelete, isDeleting }: NoteCardProps) {
   return (
     <Card className="flex flex-col justify-between">
