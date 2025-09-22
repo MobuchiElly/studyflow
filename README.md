@@ -267,7 +267,3 @@ The Notes API allows users to manage their study notes. The handlers for these r
 * Quizzes: Basic CRUD
 
 ---
-
-## Deployment
-
-The app is deployed to Vercel: [your-link.vercel.app](https://studyflow-a.vercel.app)
