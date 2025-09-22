@@ -14,6 +14,14 @@ const loginSchema = z.object({
   password: z.string().min(6, { message: "Password must be at least 6 characters" }),
 });
 
+/**
+ * LoginForm component for user authentication.
+ * Handles user input for email and password, validates it using Zod,
+ * and communicates with the backend API for login.
+ * Displays loading states, success messages, and error messages.
+ *
+ * @returns {JSX.Element} The login form component.
+ */
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,11 +42,10 @@ const LoginForm = () => {
 
       // Make API call to your login endpoint
       const response = await axios.post('/api/auth/login', validatedData);
-
+      
       if (response.status === 200) {
         setMessage('Login successful! Redirecting...');
-        console.log('Login successful! Redirecting...');
-        router.push('/dashboard');
+        router.push('/dashboard/notes');
       } else {
         setMessage(response.data.message || 'Login failed.');
       }
@@ -53,7 +60,7 @@ const LoginForm = () => {
         setMessage('An unexpected error occurred.');
       }
     } finally {
-      setLoading(false);
+      
     }
   };
 

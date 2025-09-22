@@ -5,6 +5,12 @@ import LoginForm from '@/components/auth/LoginForm';
 import RegisterForm from '@/components/auth/RegisterForm';
 import { Button } from '@/components/ui/button';
 
+/**
+ * Renders the authentication page, allowing users to switch between
+ * login and registration forms.
+ *
+ * @returns {JSX.Element} The authentication page component.
+ */
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
 

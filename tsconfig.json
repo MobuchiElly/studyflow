@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,9 +23,50 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/components/flashcards/CreateFlashcardDeckModal.env",
+    "src/app/api/flashcards/[deckId]/cards/[cardId]/route.env",
+    "src/app/api/flashcards/[deckId]/cards/route.env",
+    "src/app/api/flashcards/[id]/route.env",
+    "src/app/api/flashcards/route.env",
+    "src/components/flashcards/CreateFlashcardModal.env",
+    "src/components/flashcards/DeleteFlashcardDialog.env",
+    "src/components/flashcards/EditFlashcardDeckModal.env",
+    "src/components/flashcards/EditFlashcardModal.env",
+    "src/components/flashcards/FlashcardDeckCard.env",
+    "src/components/flashcards/FlashcardDeckHeader.env",
+    "src/components/flashcards/FlashcardDeckList.env",
+    "src/components/flashcards/FlashcardList.env",
+    "src/types/flashcard.env",
+    "src/app/dashboard/flashcards/page.env",
+    "src/app/dashboard/flashcards/[deckId]/page.env",
+    "src/components/quizzes/CreateQuizQuestionModal.env",
+    "src/components/quizzes/CreateQuizModal.env",
+    "src/components/quizzes/DeleteQuizDialog.env",
+    "src/components/quizzes/DeleteQuizQuestionDialog.env",
+    "src/components/quizzes/EditQuizModal.env",
+    "src/components/quizzes/EditQuizQuestionModal.env",
+    "src/components/quizzes/QuizHeader.env",
+    "src/components/quizzes/QuizList.env",
+    "src/types/quiz.env",
+    "src/app/api/quizzes/route.env",
+    "src/app/api/quizzes/ai-generate/route.env",
+    "src/app/api/quizzes/[quizId]/route.env",
+    "src/app/api/quizzes/[quizId]/results/route.env",
+    "src/app/api/quizzes/[quizId]/questions/route.env",
+    "src/app/dashboard/layout.env",
+    "src/app/dashboard/quizzes/page.env"
+, "src/app/dashboard/quizzes/[quizId]/page.env", "src/app/dashboard/quizzes/[quizId]/take/page.env", "src/app/checkauth/page.env"  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

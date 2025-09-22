@@ -20,6 +20,14 @@ const registerSchema = z.object({
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
+/**
+ * RegisterForm component for user registration.
+ * Handles user input for email, password, and confirm password, validates it using Zod,
+ * and communicates with the backend API for user registration.
+ * Displays loading states, success messages, and error messages, including field-specific errors.
+ *
+ * @returns {JSX.Element} The registration form component.
+ */
 export default function RegisterForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
