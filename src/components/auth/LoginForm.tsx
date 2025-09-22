@@ -34,11 +34,10 @@ const LoginForm = () => {
 
       // Make API call to your login endpoint
       const response = await axios.post('/api/auth/login', validatedData);
-
+      
       if (response.status === 200) {
         setMessage('Login successful! Redirecting...');
-        console.log('Login successful! Redirecting...');
-        router.push('/dashboard');
+        router.push('/dashboard/notes');
       } else {
         setMessage(response.data.message || 'Login failed.');
       }
@@ -53,7 +52,7 @@ const LoginForm = () => {
         setMessage('An unexpected error occurred.');
       }
     } finally {
-      setLoading(false);
+      
     }
   };
 

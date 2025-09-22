@@ -2,6 +2,7 @@
 
 StudyFlow is a learning productivity app that allows users to:
 
+Language: English at all times
 * Create and manage **notes**
 * Build and review **flashcards**
 * Take **quizzes** (manual or AI-assisted generation)
@@ -46,6 +47,8 @@ The project demonstrates intentional AI-assisted development while following cle
 * **Framework:** Next.js 15 (App Router, RSC)
 * **Language:** TypeScript
 * **Database & Auth:** Supabase (Postgres + Auth, using `@supabase/ssr` for server-side authentication)
+* **Data fetching:** Axios
+* **Data and input validation:** Zod for forms
 * **UI & Styling:** Tailwind CSS, Radix UI (if needed), Framer Motion for animations
 * **Testing:** Jest + React Testing Library + Playwright for E2E
 * **CI/CD:** GitHub Actions (build, lint, test, deploy)
@@ -168,6 +171,74 @@ The project demonstrates intentional AI-assisted development while following cle
 
 ---
 
-This ensures **StudyFlow** is cleanly structured, scalable, secure, and AI-integrated while following your **capstone project requirements**.
+12. Database Schema & Rules
 
+The project uses Supabase (Postgres + Auth) with Row Level Security (RLS) enabled.
+Key database entities and rules:
+
+Users
+
+Extends auth.users with a public.users table.
+
+Fields: id, email, display_name, avatar_url, timestamps.
+
+Triggers keep users in sync with auth.users (on insert + email updates).
+
+RLS: users can only read/update their own data.
+
+Topics
+
+Each user can create multiple study topics.
+
+Fields: id, user_id, title, description, timestamps.
+
+RLS: users can only manage their own topics.
+
+Notes
+
+Linked to both a user_id and a topic_id.
+
+Fields: id, title, content, timestamps.
+
+RLS: users can only manage their own notes.
+
+Flashcards
+
+Linked to user_id and topic_id.
+
+Fields: id, question, answer, timestamps.
+
+RLS: users can only manage their own flashcards.
+
+Quizzes
+
+Linked to user_id and topic_id.
+
+Fields: id, title, quiz_type (manual | ai_generated), questions (jsonb), timestamps.
+
+RLS: users can only manage their own quizzes.
+
+Quiz Results
+
+Linked to user_id and quiz_id.
+
+Fields: id, score, total_questions, answers (jsonb), created_at.
+
+RLS: users can only insert/view their own results.
+
+Shared Features
+
+All tables use uuid primary keys (gen_random_uuid()).
+
+updated_at managed by triggers.
+
+Indexes exist on foreign keys (user_id, topic_id, etc.) for performance.
+
+Security Rules:
+
+Every table has RLS enabled.
+
+Policies ensure users can only access their own data.
+
+All API calls must pass through Supabase Auth.
 ---

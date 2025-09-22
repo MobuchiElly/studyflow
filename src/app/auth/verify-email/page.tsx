@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { supabaseClient } from '@/lib/supabase/client';
+import { supabaseBrowserClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,7 +14,7 @@ export default function VerifyEmailPage() {
   const [verificationStatus, setVerificationStatus] = useState<'loading' | 'success' | 'failed' | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [canResend, setCanResend] = useState(false);
-  const supabase = supabaseClient;
+  const supabase = supabaseBrowserClient;
 
   useEffect(() => {
     const verifyEmail = async () => {
